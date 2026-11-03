@@ -8,9 +8,11 @@ public class Person {
     String name, surname;
     int shoeSize, salary;
 
+
+
     public Person(String name, String surname, int shoeSize, int salary, String avatarPath) {
-        this.avatarPath = avatarPath;
-        this.avatar = new ImageIcon(avatarPath);
+        this.avatarPath = "data/"+avatarPath;
+        this.avatar = new ImageIcon(this.avatarPath);
         this.name = name;
         this.surname = surname;
         this.shoeSize = shoeSize;

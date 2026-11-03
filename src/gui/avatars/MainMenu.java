@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +39,7 @@ public class MainMenu extends JFrame implements ActionListener{
             @Override
             public void actionPerformed(ActionEvent e) {
                 // TODO: Vymyslet obsah
+                loadData();
                 status.setText(personData.size() + " records loaded! You can now view the dataset!");
                 tableView.setEnabled(true);
                 dataView.setEnabled(true);
@@ -53,6 +57,25 @@ public class MainMenu extends JFrame implements ActionListener{
         this.pack();
     }
 
+    private void loadData() {
+        String dataPath = "data/persons.txt";
+
+        try {
+            personData = Files.readAllLines(Path.of(dataPath))
+                    .stream()
+                    .map(line -> line.trim().split(";"))
+                    .map(tokens -> new Person(
+                            tokens[0],
+                            tokens[1],
+                            Integer.parseInt(tokens[2]),
+                            Integer.parseInt(tokens[3]),
+                            tokens[4]
+                    )).toList();
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == tableView)
@@ -63,7 +86,7 @@ public class MainMenu extends JFrame implements ActionListener{
 
     public static void main(String[] args) {
         MainMenu loader = new MainMenu();
-        MainMenu.personData.add(new Person("Larry","Hydinger",46,225228,"icon.png"));
+        //MainMenu.personData.add(new Person("Larry","Hydinger",46,225228,"icon.png"));
         loader.setVisible(true);
     }
 }
